@@ -2,32 +2,51 @@
     <head>
         <title>OBS Ticker</title>
         <style>
-            * {font-family: sans-serif;color:#fff;}
-            body {width: 1920px; overflow: hidden;}
-            p {font-size: 14px;position:absolute;white-space:nowrap;}
+            * {font-family: sans-serif;color:#fff;background:#000;}
+            body {width: 100%; overflow: hidden;}
+            #ticker {font-size: 14px;position:absolute;white-space:nowrap;}
         </style>
     </head>
     <body>
-        <p id="ticker">
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce rutrum condimentum justo, quis ultricies urna interdum sit amet. Mauris luctus eros porta felis aliquet aliquam. Nulla ante mauris, lacinia sollicitudin facilisis nec, fringilla sit amet risus. Maecenas tincidunt risus nec eros sodales, eget mattis ipsum tincidunt. Praesent vulputate egestas lectus et suscipit. Sed in velit neque. Praesent vulputate finibus elit. Suspendisse eu blandit augue. Ut pharetra, sapien id porttitor porttitor, tortor mi facilisis ipsum, id ornare ante mi laoreet turpis. Pellentesque luctus mattis diam, id laoreet dui pellentesque ut.
-
-Nam iaculis tortor in rhoncus molestie. Etiam quam dui, posuere vitae porta non, interdum ut ligula. Nulla sit amet nibh quis neque aliquet facilisis. Duis ut lacus sagittis, vehicula nulla eu, efficitur turpis. Cras eget augue a tellus gravida luctus. Sed facilisis quam quis elit aliquam fermentum. Proin pretium porttitor ante, quis tempor dui luctus a.
-
-Nunc nec tristique magna. Morbi consectetur nisl ut imperdiet suscipit. Vestibulum vitae justo ornare, cursus arcu sed, accumsan neque. Morbi gravida posuere sapien, nec vehicula justo scelerisque vel. Fusce blandit rutrum turpis, in posuere dolor lobortis ut. In eleifend vitae risus in fermentum. In nec lectus nulla. In ultrices sagittis libero, a efficitur dui consequat in. Mauris leo est, ultrices in pretium nec, porttitor ac mauris. Curabitur dignissim, ante ut rhoncus dictum, ligula sem vestibulum est, quis pulvinar diam tellus quis augue.
-
-Sed pulvinar lorem in sem volutpat laoreet. Vivamus vitae sem sit amet eros malesuada commodo. Aliquam dictum at urna nec aliquam. Morbi feugiat, enim vitae facilisis ullamcorper, elit est vehicula sapien, nec lobortis nunc ligula sit amet velit. Donec commodo commodo orci eget blandit. Nunc ultrices enim vel ex gravida, nec mattis risus sodales. Fusce volutpat molestie tincidunt. Suspendisse porta rhoncus quam, nec fermentum libero. Aenean at efficitur quam. Cras sagittis porttitor tortor et viverra. Nullam neque ante, pellentesque nec gravida eget, ultricies nec sapien.
-
-Sed congue hendrerit nisl, nec mollis ante sagittis in. Mauris eu iaculis orci. Praesent scelerisque tortor augue, non venenatis tortor cursus eget. Integer elit enim, tristique eget hendrerit a, aliquet sed mi. Praesent semper mattis fermentum. Pellentesque ut gravida mi. Quisque dictum nulla eleifend, efficitur nisi vitae, porta diam. Phasellus in est vel massa pretium vehicula. Pellentesque blandit turpis massa, ut finibus nulla consequat et. Morbi id feugiat diam. Integer venenatis orci eget pulvinar tincidunt. Nunc molestie non neque id dignissim. Aliquam sed turpis mollis, laoreet nisl in, sagittis lacus. Suspendisse potenti.</p>
+        <p id="ticker" />
         <script type="text/javascript">
+            var headlines = [
+                'Game 2',
+                'Game 3',
+                'Game 4',
+                'This is a big test This is a big test This is a big test This is a big test This is a big test This is a big test This is a big test This is a big test This is a big test This is a big test ',
+            ];
+
             var ticker = document.getElementById('ticker');
+            function add_headlines(){
+                for (var i in headlines){
+                    var span = document.createElement('span');
+                    span.appendChild(document.createTextNode(headlines[i] + ' / '));
+                    ticker.appendChild(span);
+                }
+            }
+
+            add_headlines();
+
             var offset = 0;
             function tick(){
                 offset -= 1;
-                var rect = ticker.getBoundingClientRect();
-                if (rect.right < 0)
-                    offset = 0;
+                var ticker_rect = ticker.getBoundingClientRect();
+                var window_rect = document.body.getBoundingClientRect();
+                if (ticker_rect.right < window_rect.right)
+                    add_headlines();
+
+                // Delete hidden headlines.
+                for (var child of ticker.children){
+                    var rect = child.getBoundingClientRect();
+                    if (rect.right < 0){
+                        ticker.removeChild(child);
+                        offset += rect.width;
+                    }
+                }
                 ticker.style.left = offset;
-                setTimeout(tick, 10);
+
+                setTimeout(tick, 20);
             }
             tick()
         </script>
