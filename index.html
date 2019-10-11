@@ -24,7 +24,7 @@
 
             var ticker = document.getElementById('ticker');
             function add_headlines(){
-                load('http://data.kingofsiege.com/tickers', function(data){
+                load('//data.kingofsiege.com/tickers', function(data){
                     for (var i in data){
                         var span = document.createElement('span');
                         span.appendChild(document.createTextNode(data[i].text + ' / '));
