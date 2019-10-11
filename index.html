@@ -10,20 +10,27 @@
     <body>
         <p id="ticker" />
         <script type="text/javascript">
-            var headlines = [
-                'Game 2',
-                'Game 3',
-                'Game 4',
-                'This is a big test This is a big test This is a big test This is a big test This is a big test This is a big test This is a big test This is a big test This is a big test This is a big test ',
-            ];
+            function load(url, callback){
+                var req = new XMLHttpRequest();
+                req.overrideMimeType('application/json');
+                req.open('GET', url, true);
+                req.onreadystatechange = function(){
+                    if (req.readyState == 4 && callback != undefined){
+                        callback(JSON.parse(req.responseText));
+                    }
+                }
+                req.send(null);
+            }
 
             var ticker = document.getElementById('ticker');
             function add_headlines(){
-                for (var i in headlines){
-                    var span = document.createElement('span');
-                    span.appendChild(document.createTextNode(headlines[i] + ' / '));
-                    ticker.appendChild(span);
-                }
+                load('//data.kingofsiege.com/tickers', function(data){
+                    for (var i in data){
+                        var span = document.createElement('span');
+                        span.appendChild(document.createTextNode(data[i].text + ' / '));
+                        ticker.appendChild(span);
+                    }
+                });
             }
 
             add_headlines();
