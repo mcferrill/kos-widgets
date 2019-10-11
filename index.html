@@ -22,9 +22,17 @@
                 req.send(null);
             }
 
+            function check_overflow(){
+                var ticker_rect = ticker.getBoundingClientRect();
+                var window_rect = document.body.getBoundingClientRect();
+                return ticker_rect.right < window_rect.right;
+            }
+
             var ticker = document.getElementById('ticker');
             function add_headlines(){
                 load('//data.kingofsiege.com/tickers', function(data){
+                    if (!check_overflow())
+                        return;
                     for (var i in data){
                         var span = document.createElement('span');
                         span.appendChild(document.createTextNode(data[i].text + ' / '));
@@ -38,9 +46,7 @@
             var offset = 0;
             function tick(){
                 offset -= 1;
-                var ticker_rect = ticker.getBoundingClientRect();
-                var window_rect = document.body.getBoundingClientRect();
-                if (ticker_rect.right < window_rect.right)
+                if (check_overflow())
                     add_headlines();
 
                 // Delete hidden headlines.
