@@ -1,0 +1,41 @@
+<html>
+    <head>
+        <title>KoS Standings</title>
+        <style>
+            * {font-family: sans-serif;color:#fff;background:#000;}
+            body {width: 100%; overflow: hidden;}
+            #matches {width:40%;}
+            th, td {text-align:left;}
+            #ticker {font-size: 14px;position:absolute;white-space:nowrap;}
+        </style>
+        <script type="text/javascript" src="/functions.js"></script>
+    </head>
+    <body>
+        <table id="matches">
+            <tr>
+                <th>Team 1</th>
+                <th>Team 2</th>
+                <th>Map</th>
+                <th>Score</th>
+            </tr>
+        </table>
+        <p id="ticker" />
+        <script type="text/javascript">
+            function get_scores(){
+                var data = [
+                    {
+                        team1: [{gamertag: 'BInsane32'}, {gamertag: 'Freestyled5'}],
+                        team2: [{gamertag: 'Mayo.OcG'}, {gamertag: 'C1ayford21'}],
+                        score1: 5,
+                        score2: 4,
+                    }
+                ]
+                for (var match of data){
+                    
+                }
+            }
+
+            get_scores();
+        </script>
+    </body>
+</html>

@@ -6,22 +6,11 @@
             body {width: 100%; overflow: hidden;}
             #ticker {font-size: 14px;position:absolute;white-space:nowrap;}
         </style>
+        <script type="text/javascript" src="/functions.js"></script>
     </head>
     <body>
         <p id="ticker" />
         <script type="text/javascript">
-            function load(url, callback){
-                var req = new XMLHttpRequest();
-                req.overrideMimeType('application/json');
-                req.open('GET', url, true);
-                req.onreadystatechange = function(){
-                    if (req.readyState == 4 && callback != undefined){
-                        callback(JSON.parse(req.responseText));
-                    }
-                }
-                req.send(null);
-            }
-
             function check_overflow(){
                 var ticker_rect = ticker.getBoundingClientRect();
                 var window_rect = document.body.getBoundingClientRect();
