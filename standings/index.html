@@ -32,24 +32,27 @@
             <tbody id="player_list"></tbody>
         </table>
         <script type="text/javascript">
+            const urlParams = new URLSearchParams(window.location.search);
+            var tournament = urlParams.get('tournament');
+            if (!tournament)
+                tournament = 1;
             function get_scores(){
-                load('//data.kingofsiege.com/matches?tournament=1', function(matches){
+                load('//data.kingofsiege.com/matches?tournament=' + tournament, function(matches){
                     var match_list = document.getElementById('match_list');
                     var players = {};
                     match_list.innerHTML = '';
                     for (var match of matches){
                         for (var i in match.players){
                             var player = match.players[i];
-                            if (!players[player.name]){
+                            if (!players[player.name])
                                 players[player.name] = {name: player.name, wins:0, rounds_for:0, rounds_against:0};
-                            }
-                            if (i < 2){
+                            if (i < 2 && match.score1){
                                 if (match.score1 > match.score2)
                                     players[player.name].wins += 1;
                                 players[player.name].rounds_for += match.score1;
                                 players[player.name].rounds_against += match.score2;
                             }
-                            else {
+                            else if (match.score1){
                                 if (match.score1 < match.score2)
                                     players[player.name].wins += 1;
                                 players[player.name].rounds_for += match.score2;
@@ -60,7 +63,10 @@
                         html += '<td>' + match.players[0].name + ' &amp; ' + match.players[1].name + '</td>\n';
                         html += '<td>' + match.players[2].name + ' &amp; ' + match.players[3].name + '</td>\n';
                         html += '<td>' + match.map + '</td>\n';
-                        html += '<td>' + match.score1 + ' - ' + match.score2 + '</td>\n';
+                        if (match.score1)
+                            html += '<td>' + match.score1 + ' - ' + match.score2 + '</td>\n';
+                        else
+                            html += '<td></td>';
                         html += '<tr/>';
                         match_list.innerHTML += html;
                     }
