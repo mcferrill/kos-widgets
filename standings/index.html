@@ -8,7 +8,7 @@
             #standings {width:40%;float:right;}
             th, td {text-align:left;}
         </style>
-        <script type="text/javascript" src="/functions.js"></script>
+        <script type="text/javascript" src="../functions.js"></script>
     </head>
     <body>
         <table id="matches">
@@ -18,14 +18,7 @@
                 <th>Map</th>
                 <th>Score</th>
             </tr>
-            <tbody id="match_list">
-                <tr>
-                    <td>macferrill &amp; Shifty</td>
-                    <td>BInsane32 &amp; Freestyled5</td>
-                    <td>Chalet</td>
-                    <td>3-5</td>
-                </tr>
-            </tbody>
+            <tbody id="match_list"></tbody>
         </table>
         <table id="standings">
             <tr>
@@ -35,35 +28,11 @@
                 <th>Rounds Lost</th>
                 <th>Round Differential</th>
             </tr>
-            <tbody id="player_list">
-                <tr>
-                    <td>macferrill</td>
-                    <td>1</td>
-                    <td>5</td>
-                    <td>3</td>
-                    <td>2</td>
-                </tr>
-            </tbody>
+            <tbody id="player_list"></tbody>
         </table>
         <script type="text/javascript">
             function get_scores(){
                 load('//data.kingofsiege.com/matches', function(matches){
-                    /*
-                var matches = [
-                    {
-                        players: [
-                            {name: 'Mayo.OcG'},
-                            {name: 'C1ayford21'},
-                            {name: 'BInsane32'},
-                            {name: 'Freestyled5'},
-                        ],
-                        score1: 4,
-                        score2: 5,
-                        map: 'Clubhouse',
-                    },
-                ]
-                */
-
                     var match_list = document.getElementById('match_list');
                     var players = {};
                     match_list.innerHTML = '';
