@@ -4,9 +4,9 @@
         <style>
             * {font-family: sans-serif;color:#fff;background:#000;}
             body {width: 100%; overflow: hidden;}
-            #matches {width:40%;}
+            #matches {width:40%;float:left;}
+            #standings {width:40%;float:right;}
             th, td {text-align:left;}
-            #ticker {font-size: 14px;position:absolute;white-space:nowrap;}
         </style>
         <script type="text/javascript" src="/functions.js"></script>
     </head>
@@ -18,21 +18,112 @@
                 <th>Map</th>
                 <th>Score</th>
             </tr>
+            <tbody id="match_list">
+                <tr>
+                    <td>macferrill &amp; Shifty</td>
+                    <td>BInsane32 &amp; Freestyled5</td>
+                    <td>Chalet</td>
+                    <td>3-5</td>
+                </tr>
+            </tbody>
         </table>
-        <p id="ticker" />
+        <table id="standings">
+            <tr>
+                <th>Player</th>
+                <th>Wins</th>
+                <th>Rounds Won</th>
+                <th>Rounds Lost</th>
+                <th>Round Differential</th>
+            </tr>
+            <tbody id="player_list">
+                <tr>
+                    <td>macferrill</td>
+                    <td>1</td>
+                    <td>5</td>
+                    <td>3</td>
+                    <td>2</td>
+                </tr>
+            </tbody>
+        </table>
         <script type="text/javascript">
             function get_scores(){
-                var data = [
+                load('//data.kingofsiege.com/matches', function(matches){
+                    /*
+                var matches = [
                     {
-                        team1: [{gamertag: 'BInsane32'}, {gamertag: 'Freestyled5'}],
-                        team2: [{gamertag: 'Mayo.OcG'}, {gamertag: 'C1ayford21'}],
-                        score1: 5,
-                        score2: 4,
-                    }
+                        players: [
+                            {name: 'Mayo.OcG'},
+                            {name: 'C1ayford21'},
+                            {name: 'BInsane32'},
+                            {name: 'Freestyled5'},
+                        ],
+                        score1: 4,
+                        score2: 5,
+                        map: 'Clubhouse',
+                    },
                 ]
-                for (var match of data){
-                    
-                }
+                */
+
+                    var match_list = document.getElementById('match_list');
+                    var players = {};
+                    match_list.innerHTML = '';
+                    for (var match of matches){
+                        for (var i in match.players){
+                            var player = match.players[i];
+                            if (!players[player.name]){
+                                players[player.name] = {name: player.name, wins:0, rounds_for:0, rounds_against:0};
+                            }
+                            if (i < 2){
+                                if (match.score1 > match.score2)
+                                    players[player.name].wins += 1;
+                                players[player.name].rounds_for += match.score1;
+                                players[player.name].rounds_against += match.score2;
+                            }
+                            else {
+                                if (match.score1 < match.score2)
+                                    players[player.name].wins += 1;
+                                players[player.name].rounds_for += match.score2;
+                                players[player.name].rounds_against += match.score1;
+                            }
+                        }
+                        var html = '<tr>\n';
+                        html += '<td>' + match.players[0].name + ' &amp; ' + match.players[1].name + '</td>\n';
+                        html += '<td>' + match.players[2].name + ' &amp; ' + match.players[3].name + '</td>\n';
+                        html += '<td>' + match.map + '</td>\n';
+                        html += '<td>' + match.score1 + ' - ' + match.score2 + '</td>\n';
+                        html += '<tr/>';
+                        match_list.innerHTML += html;
+                    }
+
+                    var player_list = document.getElementById('player_list');
+                    player_list.innerHTML = '';
+                    var table = [];
+                    for (var name in players){
+                        var player = players[name];
+                        table.push([name, player.wins, player.rounds_for, player.rounds_against, player.rounds_for - player.rounds_against]);
+                    }
+                    table.sort(function(a,b){
+                        var wins = b[1] - a[1];
+                        var diff = b[4] - a[4];
+                        var rounds = b[2] - a[2];
+                        if (wins)
+                            return wins;
+                        if (diff)
+                            return diff;
+                        if (rounds)
+                            return rounds;
+                    });
+
+                    for (var row of table){
+                        var html = '<tr>\n';
+                        for (var col of row)
+                            html += '<td>' + col + '</td>\n';
+                        html += '</tr>';
+                        player_list.innerHTML += html;
+                    }
+
+                    setTimeout(get_scores, 5000);
+                });
             }
 
             get_scores();
