@@ -33,7 +33,7 @@
         </table>
         <script type="text/javascript">
             function get_scores(){
-                load('//data.kingofsiege.com/matches', function(matches){
+                load('//data.kingofsiege.com/matches?tournament=1', function(matches){
                     var match_list = document.getElementById('match_list');
                     var players = {};
                     match_list.innerHTML = '';
