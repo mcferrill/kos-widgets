@@ -3,34 +3,53 @@
         <title>KoS Standings</title>
         <style>
             * {font-family: sans-serif;color:#fff;background:#000;}
+            h1 {text-align:center;font-size:300%;background:#fff;color:#000;margin:0;padding:15px 0;}
+            h2 {margin:15px 0 0 20px;}
             body {width: 100%; overflow: hidden;}
-            table {padding:5px;}
-            #matches {width:45%;float:left;}
-            #standings {width:45%;float:right;}
+            table {border-spacing:0;width:100%;padding:20px;}
+            td, th {padding:5px;}
+            th {background:#999;color:#000;}
+            tbody tr:nth-child(even) td {background:#111;}
+            div {width:50%;padding:0;margin:0;}
+            #matches {float:left;}
+            #standings {float:right;}
             th, td {text-align:left;}
         </style>
         <script type="text/javascript" src="../functions.js"></script>
     </head>
     <body>
-        <table id="matches">
-            <tr>
-                <th>Team 1</th>
-                <th>Team 2</th>
-                <th>Map</th>
-                <th>Score</th>
-            </tr>
-            <tbody id="match_list"></tbody>
-        </table>
-        <table id="standings">
-            <tr>
-                <th>Player</th>
-                <th>Wins</th>
-                <th>Rounds Won</th>
-                <th>Rounds Lost</th>
-                <th>Round Differential</th>
-            </tr>
-            <tbody id="player_list"></tbody>
-        </table>
+        <h1>Standings</h1>
+        <div id="matches">
+            <h2>Matches</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Team 1</th>
+                        <th>Team 2</th>
+                        <th>Map</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="match_list"></tbody>
+            </table>
+        </div>
+        <div id="standings">
+            <h2>Players</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Player</th>
+                        <th>Wins</th>
+                        <th>Rounds Won</th>
+                        <th>Rounds Lost</th>
+                        <th>Round Differential</th>
+                    </tr>
+                </thead>
+                <tbody id="player_list"></tbody>
+            </table>
+        </div>
         <script type="text/javascript">
             const urlParams = new URLSearchParams(window.location.search);
             var tournament = urlParams.get('tournament');
@@ -41,7 +60,8 @@
                     var match_list = document.getElementById('match_list');
                     var players = {};
                     match_list.innerHTML = '';
-                    for (var match of matches){
+                    for (var match_number in matches){
+                        var match = matches[match_number];
                         for (var i in match.players){
                             var player = match.players[i];
                             if (!players[player.name])
@@ -60,6 +80,7 @@
                             }
                         }
                         var html = '<tr>\n';
+                        html += '<td>' + ((match_number/1) + 1) + '</td>\n';
                         html += '<td>' + match.players[0].name + ' &amp; ' + match.players[1].name + '</td>\n';
                         html += '<td>' + match.players[2].name + ' &amp; ' + match.players[3].name + '</td>\n';
                         html += '<td>' + match.map + '</td>\n';
@@ -67,7 +88,7 @@
                             html += '<td>' + match.score1 + ' - ' + match.score2 + '</td>\n';
                         else
                             html += '<td></td>';
-                        html += '<tr/>';
+                        html += '</tr>';
                         match_list.innerHTML += html;
                     }
 
@@ -90,8 +111,10 @@
                             return rounds;
                     });
 
-                    for (var row of table){
+                    for (var i in table){
+                        var row = table[i];
                         var html = '<tr>\n';
+                        html += '<td>' + ((i/1) + 1) + '</td>\n';
                         for (var col of row)
                             html += '<td>' + col + '</td>\n';
                         html += '</tr>';
