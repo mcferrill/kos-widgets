@@ -2,9 +2,13 @@
     <head>
         <title>OBS Ticker</title>
         <style>
-            * {font-family: sans-serif;color:#fff;background:#000;}
+            @font-face {
+                font-family: 'ScoutCond';
+                src: url('../fonts/ScoutCond-Bold.ttf') format('truetype');
+            }
+            * {font-family: ScoutCond;color:#fff;background:#000;}
             body {width: 100%; overflow: hidden;}
-            #ticker {font-size: 14px;position:absolute;white-space:nowrap;}
+            #ticker {font-size: 20px;position:absolute;white-space:nowrap;}
         </style>
         <script type="text/javascript" src="../functions.js"></script>
     </head>
@@ -34,7 +38,7 @@
 
             var offset = 0;
             function tick(){
-                offset -= 1;
+                offset -= .5;
                 if (check_overflow())
                     add_headlines();
 
@@ -48,7 +52,7 @@
                 }
                 ticker.style.left = offset;
 
-                setTimeout(tick, 20);
+                setTimeout(tick, 7);
             }
             tick()
         </script>

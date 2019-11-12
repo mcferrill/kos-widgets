@@ -2,13 +2,21 @@
     <head>
         <title>KoS Standings</title>
         <style>
-            * {font-family: sans-serif;color:#fff;background:#000;}
+            @font-face {
+                font-family: 'ScoutCond-regular';
+                src: url('../fonts/ScoutCond-Thin.ttf') format('truetype');
+            }
+            @font-face {
+                font-family: 'ScoutCond-bold';
+                src: url('../fonts/ScoutCond-Bold.ttf') format('truetype');
+            }
+            * {font-family: ScoutCond-regular;color:#fff;background:#000;}
             body {width: 100%; overflow: hidden;padding:0;margin:0;}
-            h1 {text-align:center;font-size:300%;background:#fff;color:#000;margin:0;padding:15px 0;}
-            h2 {margin:15px 0 0 20px;}
-            table {border-spacing:0;width:100%;padding:20px;}
+            h1 {font-family: ScoutCond-bold;text-align:center;font-size:300%;background:#fff;color:#000;margin:0;padding:15px 0;}
+            h2 {font-family: ScoutCond-bold;margin:15px 0 0 20px;}
+            table {font-size:150%;border-spacing:0;width:100%;padding:20px;}
             td, th {padding:5px;}
-            th {background:#999;color:#000;}
+            th {font-family: ScoutCond-bold;background:#999;color:#000;}
             tbody tr:nth-child(even) td {background:#111;}
             div {width:50%;padding:0;margin:0;}
             #matches {float:left;}
