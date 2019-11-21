@@ -1,6 +1,7 @@
 <html>
     <head>
         <title>KoS Standings</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
             @font-face {
                 font-family: 'ScoutCond-regular';
@@ -11,7 +12,7 @@
                 src: url('../fonts/ScoutCond-Bold.ttf') format('truetype');
             }
             * {font-family: ScoutCond-regular;color:#fff;background:#000;letter-spacing:.05em;}
-            body {width: 100%; overflow: hidden;padding:0;margin:0;}
+            body {width: 100%;padding:0;margin:0;}
             h1 {font-family: ScoutCond-bold;text-align:center;font-size:300%;background:#fff;color:#000;margin:0;padding:15px 0;letter-spacing:normal;}
             h2 {font-family: ScoutCond-bold;margin:15px 0 0 20px;}
             table {font-size:150%;border-spacing:0;width:100%;padding:20px;}
@@ -23,6 +24,14 @@
             #standings {float:right;}
             #matches table :last-child, #standings table :nth-last-child(-n+4){text-align:right;}
             th, td {text-align:left;}
+            @media screen and (max-width: 1000px){
+                #matches, #standings {float:none;width:100%;}
+                h1 {display:none;}
+                h2 {font-size:200%;}
+            }
+            @media screen and (max-width: 800px){
+                table {width:100%;padding:0;padding-top:20px;}
+            }
         </style>
         <script type="text/javascript" src="../functions.js"></script>
     </head>
