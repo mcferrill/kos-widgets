@@ -27,11 +27,12 @@
             @media screen and (max-width: 1000px){
                 #matches, #standings {float:none;width:100%;}
                 h1 {display:none;}
-                h2 {font-size:200%;}
+                h2 {font-size:200%;text-align:center;}
             }
             @media screen and (max-width: 800px){
-                body {font-size:80%;}
+                body {font-size:50%;}
                 table {width:100%;padding:0;padding-top:20px;}
+                .rounds {display:none;}
             }
         </style>
         <script type="text/javascript" src="../functions.js"></script>
@@ -61,9 +62,9 @@
                         <th></th>
                         <th>Player</th>
                         <th>Wins</th>
-                        <th>Rounds Won</th>
-                        <th>Rounds Lost</th>
-                        <th>Round Differential</th>
+                        <th><span class="rounds">Rounds</span> Won</th>
+                        <th><span class="rounds">Rounds</span> Lost</th>
+                        <th><span class="rounds">Rounds</span> Differential</th>
                     </tr>
                 </thead>
                 <tbody id="player_list"></tbody>
