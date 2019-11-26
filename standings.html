@@ -19,20 +19,19 @@
             td, th {padding:5px;}
             th, th span {font-family: ScoutCond-bold;background:#999;color:#000;}
             tbody tr:nth-child(even) td {background:#111;}
-            div {width:50%;padding:0;margin:0;}
-            #matches {float:left;}
-            #standings {float:right;}
-            #matches table :last-child, #standings table :nth-last-child(-n+4){text-align:right;}
+            div {width:35%;padding:0;margin:0;float:left;}
+            #standings {width:30%;}
+            tr :last-child, #standings tr :nth-last-child(-n+4){text-align:right;}
             th, td {text-align:left;}
-            @media screen and (max-width: 1200px){
-                #matches, #standings {float:none;width:100%;}
+            @media screen and (max-width: 1600px){
+                div, #standings {width:100%;}
                 h1 {display:none;}
                 h2 {font-size:200%;text-align:center;margin-left:0;}
             }
             @media screen and (max-width: 800px){
                 body {font-size:55%;}
                 table {width:100%;padding:0;padding-top:20px;}
-                .rounds {display:none;}
+                /*.rounds {display:none;}*/
             }
         </style>
         <script type="text/javascript" src="../functions.js"></script>
@@ -40,7 +39,7 @@
     <body>
         <h1>Standings</h1>
         <div id="matches">
-            <h2>Matches</h2>
+            <h2>Stream 1</h2>
             <table>
                 <thead>
                     <tr>
@@ -54,6 +53,21 @@
                 <tbody id="match_list"></tbody>
             </table>
         </div>
+        <div id="matches2">
+            <h2>Stream 2</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Team 1</th>
+                        <th>Team 2</th>
+                        <th>Map</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="match_list2"></tbody>
+            </table>
+        </div>
         <div id="standings">
             <h2>Players</h2>
             <table>
@@ -62,9 +76,9 @@
                         <th></th>
                         <th>Player</th>
                         <th>Wins</th>
-                        <th><span class="rounds">Rounds</span> Won</th>
-                        <th><span class="rounds">Rounds</span> Lost</th>
-                        <th><span class="rounds">Rounds</span> Differential</th>
+                        <th><span class="rounds">Rounds</span>/W</th>
+                        <th><span class="rounds">Rounds</span>/L</th>
+                        <th><span class="rounds">Round</span>/Diff</th>
                     </tr>
                 </thead>
                 <tbody id="player_list"></tbody>
@@ -78,8 +92,10 @@
             function get_scores(){
                 load('//data.kingofsiege.com/matches?tournament=' + tournament, function(matches){
                     var match_list = document.getElementById('match_list');
+                    var match_list2 = document.getElementById('match_list2');
                     var players = {};
                     match_list.innerHTML = '';
+                    match_list2.innerHTML = '';
                     for (var match_number in matches){
                         var match = matches[match_number];
                         for (var i in match.players){
@@ -110,6 +126,7 @@
                             html += '<td></td>';
                         html += '</tr>';
                         match_list.innerHTML += html;
+                        match_list2.innerHTML = match_list.innerHTML
                     }
 
                     var player_list = document.getElementById('player_list');
