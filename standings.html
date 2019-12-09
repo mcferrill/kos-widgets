@@ -75,10 +75,9 @@
                     <tr>
                         <th></th>
                         <th>Player</th>
+                        <th>Games</th>
                         <th>Wins</th>
-                        <th><span class="rounds">Rounds</span>/W</th>
-                        <th><span class="rounds">Rounds</span>/L</th>
-                        <th><span class="rounds">Round</span>/Diff</th>
+                        <th>Rounds W/L/Diff</th>
                     </tr>
                 </thead>
                 <tbody id="player_list"></tbody>
@@ -101,7 +100,14 @@
                         for (var i in match.players){
                             var player = match.players[i];
                             if (!players[player.name])
-                                players[player.name] = {name: player.name, wins:0, rounds_for:0, rounds_against:0};
+                                players[player.name] = {
+                                    name: player.name,
+                                    games: 0,
+                                    wins: 0,
+                                    rounds_for: 0,
+                                    rounds_against:0
+                                };
+                            players[player.name].games++;
                             if (i < 2 && match.score1){
                                 if (match.score1 > match.score2)
                                     players[player.name].wins += 1;
@@ -134,7 +140,8 @@
                     var table = [];
                     for (var name in players){
                         var player = players[name];
-                        table.push([name, player.wins, player.rounds_for, player.rounds_against, player.rounds_for - player.rounds_against]);
+                        var rounds = `${player.rounds_for}/${player.rounds_against}/${player.rounds_for - player.rounds_against}`;
+                        table.push([name, player.games, player.wins, rounds]);
                     }
                     table.sort(function(a,b){
                         var wins = b[1] - a[1];
