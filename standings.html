@@ -21,7 +21,9 @@
             tbody tr:nth-child(even) td {background:#111;}
             div {width:35%;padding:0;margin:0;float:left;}
             #standings {width:30%;}
-            tr :last-child, #standings tr :nth-last-child(-n+4){text-align:right;}
+            .single-stream #matches2 {display:none;}
+            .single-stream div, .single-stream #standings {width:50%;}
+            tr :last-child{text-align:right;}
             th, td {text-align:left;}
             @media screen and (max-width: 1600px){
                 div, #standings {width:100%;}
@@ -31,12 +33,11 @@
             @media screen and (max-width: 800px){
                 body {font-size:55%;}
                 table {width:100%;padding:0;padding-top:20px;}
-                /*.rounds {display:none;}*/
             }
         </style>
         <script type="text/javascript" src="../functions.js"></script>
     </head>
-    <body>
+    <body id="body">
         <h1>Standings</h1>
         <div id="matches">
             <h2>Stream 1</h2>
@@ -95,6 +96,12 @@
                     var players = {};
                     match_list.innerHTML = '';
                     match_list2.innerHTML = '';
+
+                    if (!matches[0].stream){
+                        document.getElementById('body').className = 'single-stream';
+                        document.getElementById('matches').children[0].innerHTML = 'Matches';
+                    }
+
                     for (var match_number in matches){
                         var match = matches[match_number];
                         for (var i in match.players){
@@ -121,18 +128,25 @@
                                 players[player.name].rounds_against += match.score1;
                             }
                         }
-                        var html = '<tr>\n';
-                        html += '<td>' + ((match_number/1) + 1) + '</td>\n';
-                        html += '<td>' + match.players[0].name + ' &amp; ' + match.players[1].name + '</td>\n';
-                        html += '<td>' + match.players[2].name + ' &amp; ' + match.players[3].name + '</td>\n';
-                        html += '<td>' + match.map + '</td>\n';
+
+                        if (match.stream == 2)
+                            match_number = match_list2.children.length + 1;
+                        else
+                            match_number = match_list.children.length + 1;
+                        var html = `<tr>
+                            <td>${match_number}</td>
+                            <td>${match.players[0].name} &amp; ${match.players[1].name}</td>
+                            <td>${match.players[2].name} &amp; ${match.players[3].name}</td>
+                            <td>${match.map}</td>\n`;
                         if (match.score1)
-                            html += '<td>' + match.score1 + ' - ' + match.score2 + '</td>\n';
+                            html += `<td>${match.score1} - ${match.score2}</td>\n`;
                         else
                             html += '<td></td>';
                         html += '</tr>';
-                        match_list.innerHTML += html;
-                        match_list2.innerHTML = match_list.innerHTML
+                        if (match.stream == 2)
+                            match_list2.innerHTML += html;
+                        else
+                            match_list.innerHTML += html;
                     }
 
                     var player_list = document.getElementById('player_list');
@@ -140,7 +154,7 @@
                     var table = [];
                     for (var name in players){
                         var player = players[name];
-                        var rounds = `${player.rounds_for}/${player.rounds_against}/${player.rounds_for - player.rounds_against}`;
+                        var rounds = `${player.rounds_for} / ${player.rounds_against} / ${player.rounds_for - player.rounds_against}`;
                         table.push([name, player.games, player.wins, rounds]);
                     }
                     table.sort(function(a,b){
@@ -158,9 +172,9 @@
                     for (var i in table){
                         var row = table[i];
                         var html = '<tr>\n';
-                        html += '<td>' + ((i/1) + 1) + '</td>\n';
+                        html += `<td>${((i/1) + 1)}</td>\n`;
                         for (var col of row)
-                            html += '<td>' + col + '</td>\n';
+                            html += `<td>${col}</td>\n`;
                         html += '</tr>';
                         player_list.innerHTML += html;
                     }
