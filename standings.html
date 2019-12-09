@@ -97,7 +97,7 @@
                     match_list.innerHTML = '';
                     match_list2.innerHTML = '';
 
-                    if (!matches[0].stream){
+                    if (!matches[0].stream || tournament == 1){
                         document.getElementById('body').className = 'single-stream';
                         document.getElementById('matches').children[0].innerHTML = 'Matches';
                     }
