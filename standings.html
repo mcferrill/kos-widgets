@@ -22,9 +22,11 @@
             div {width:35%;padding:0;margin:0;float:left;}
             #standings {width:30%;}
             .single-stream #matches2 {display:none;}
-            .single-stream div, .single-stream #standings {width:50%;}
             tr :last-child{text-align:right;}
             th, td {text-align:left;}
+            @media screen and (min-width: 1600px){
+                .single-stream div, .single-stream #standings {width:50%;}
+            }
             @media screen and (max-width: 1600px){
                 div, #standings {width:100%;}
                 h1 {display:none;}
