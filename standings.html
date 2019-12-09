@@ -19,28 +19,28 @@
             td, th {padding:5px;}
             th, th span {font-family: ScoutCond-bold;background:#999;color:#000;}
             tbody tr:nth-child(even) td {background:#111;}
-            div {width:50%;padding:0;margin:0;}
-            #matches {float:left;}
-            #standings {float:right;}
-            #matches table :last-child, #standings table :nth-last-child(-n+4){text-align:right;}
+            div {width:35%;padding:0;margin:0;float:left;}
+            #standings {width:30%;}
+            .single-stream #matches2 {display:none;}
+            .single-stream div, .single-stream #standings {width:50%;}
+            tr :last-child{text-align:right;}
             th, td {text-align:left;}
-            @media screen and (max-width: 1200px){
-                #matches, #standings {float:none;width:100%;}
+            @media screen and (max-width: 1600px){
+                div, #standings {width:100%;}
                 h1 {display:none;}
                 h2 {font-size:200%;text-align:center;margin-left:0;}
             }
             @media screen and (max-width: 800px){
                 body {font-size:55%;}
                 table {width:100%;padding:0;padding-top:20px;}
-                .rounds {display:none;}
             }
         </style>
         <script type="text/javascript" src="../functions.js"></script>
     </head>
-    <body>
+    <body id="body">
         <h1>Standings</h1>
         <div id="matches">
-            <h2>Matches</h2>
+            <h2>Stream 1</h2>
             <table>
                 <thead>
                     <tr>
@@ -54,6 +54,21 @@
                 <tbody id="match_list"></tbody>
             </table>
         </div>
+        <div id="matches2">
+            <h2>Stream 2</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Team 1</th>
+                        <th>Team 2</th>
+                        <th>Map</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody id="match_list2"></tbody>
+            </table>
+        </div>
         <div id="standings">
             <h2>Players</h2>
             <table>
@@ -61,10 +76,9 @@
                     <tr>
                         <th></th>
                         <th>Player</th>
+                        <th>Games</th>
                         <th>Wins</th>
-                        <th><span class="rounds">Rounds</span> Won</th>
-                        <th><span class="rounds">Rounds</span> Lost</th>
-                        <th><span class="rounds">Rounds</span> Differential</th>
+                        <th>Rounds W/L/Diff</th>
                     </tr>
                 </thead>
                 <tbody id="player_list"></tbody>
@@ -78,14 +92,29 @@
             function get_scores(){
                 load('//data.kingofsiege.com/matches?tournament=' + tournament, function(matches){
                     var match_list = document.getElementById('match_list');
+                    var match_list2 = document.getElementById('match_list2');
                     var players = {};
                     match_list.innerHTML = '';
+                    match_list2.innerHTML = '';
+
+                    if (!matches[0].stream || tournament == 1){
+                        document.getElementById('body').className = 'single-stream';
+                        document.getElementById('matches').children[0].innerHTML = 'Matches';
+                    }
+
                     for (var match_number in matches){
                         var match = matches[match_number];
                         for (var i in match.players){
                             var player = match.players[i];
                             if (!players[player.name])
-                                players[player.name] = {name: player.name, wins:0, rounds_for:0, rounds_against:0};
+                                players[player.name] = {
+                                    name: player.name,
+                                    games: 0,
+                                    wins: 0,
+                                    rounds_for: 0,
+                                    rounds_against:0
+                                };
+                            players[player.name].games++;
                             if (i < 2 && match.score1){
                                 if (match.score1 > match.score2)
                                     players[player.name].wins += 1;
@@ -99,17 +128,25 @@
                                 players[player.name].rounds_against += match.score1;
                             }
                         }
-                        var html = '<tr>\n';
-                        html += '<td>' + ((match_number/1) + 1) + '</td>\n';
-                        html += '<td>' + match.players[0].name + ' &amp; ' + match.players[1].name + '</td>\n';
-                        html += '<td>' + match.players[2].name + ' &amp; ' + match.players[3].name + '</td>\n';
-                        html += '<td>' + match.map + '</td>\n';
+
+                        if (match.stream == 2 && tournament > 1)
+                            match_number = match_list2.children.length + 1;
+                        else
+                            match_number = match_list.children.length + 1;
+                        var html = `<tr>
+                            <td>${match_number}</td>
+                            <td>${match.players[0].name} &amp; ${match.players[1].name}</td>
+                            <td>${match.players[2].name} &amp; ${match.players[3].name}</td>
+                            <td>${match.map}</td>\n`;
                         if (match.score1)
-                            html += '<td>' + match.score1 + ' - ' + match.score2 + '</td>\n';
+                            html += `<td>${match.score1} - ${match.score2}</td>\n`;
                         else
                             html += '<td></td>';
                         html += '</tr>';
-                        match_list.innerHTML += html;
+                        if (match.stream == 2 && tournament > 1)
+                            match_list2.innerHTML += html;
+                        else
+                            match_list.innerHTML += html;
                     }
 
                     var player_list = document.getElementById('player_list');
@@ -117,7 +154,8 @@
                     var table = [];
                     for (var name in players){
                         var player = players[name];
-                        table.push([name, player.wins, player.rounds_for, player.rounds_against, player.rounds_for - player.rounds_against]);
+                        var rounds = `${player.rounds_for} / ${player.rounds_against} / ${player.rounds_for - player.rounds_against}`;
+                        table.push([name, player.games, player.wins, rounds]);
                     }
                     table.sort(function(a,b){
                         var wins = b[1] - a[1];
@@ -134,9 +172,9 @@
                     for (var i in table){
                         var row = table[i];
                         var html = '<tr>\n';
-                        html += '<td>' + ((i/1) + 1) + '</td>\n';
+                        html += `<td>${((i/1) + 1)}</td>\n`;
                         for (var col of row)
-                            html += '<td>' + col + '</td>\n';
+                            html += `<td>${col}</td>\n`;
                         html += '</tr>';
                         player_list.innerHTML += html;
                     }
