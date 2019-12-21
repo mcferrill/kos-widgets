@@ -161,19 +161,18 @@
                     }
                     // Sort reversed
                     table.sort(function(a,b){
-                        var wins = a[1] - b[1];
-                        var diff = a[4] - b[4];
-                        var rounds = a[5] - b[5];
+                        var wins = b[2] - a[2];
+                        var diff = b[4] - a[4];
+                        var rounds = b[5] - a[5];
                         if (wins)
                             return wins;
                         if (diff)
                             return diff;
                         if (rounds)
                             return rounds;
-                        return 0;
                     });
 
-                    for (var i in table.reverse()){
+                    for (var i in table){
                         var row = table[i];
                         var html = '<tr>\n';
                         html += `<td>${((i/1) + 1)}</td>\n`;
