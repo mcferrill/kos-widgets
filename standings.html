@@ -157,15 +157,13 @@
                     for (var name in players){
                         var player = players[name];
                         var rounds = `${player.rounds_for} / ${player.rounds_against} / ${player.rounds_for - player.rounds_against}`;
-                        table.push([name, player.games, player.wins, rounds]);
+                        table.push([name, player.games, player.wins, rounds, player.rounds_for - player.rounds_against, player.rounds_for]);
                     }
                     // Sort reversed
                     table.sort(function(a,b){
-                        a *= 1;
-                        b *= 1;
                         var wins = a[1] - b[1];
                         var diff = a[4] - b[4];
-                        var rounds = a[2] - b[2];
+                        var rounds = a[5] - b[5];
                         if (wins)
                             return wins;
                         if (diff)
@@ -179,7 +177,7 @@
                         var row = table[i];
                         var html = '<tr>\n';
                         html += `<td>${((i/1) + 1)}</td>\n`;
-                        for (var col of row)
+                        for (var col of row.slice(0, 4))
                             html += `<td>${col}</td>\n`;
                         html += '</tr>';
                         player_list.innerHTML += html;
