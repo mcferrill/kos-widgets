@@ -78,9 +78,9 @@
                     <tr>
                         <th></th>
                         <th>Player</th>
-                        <th>Games</th>
-                        <th>Wins</th>
+                        <th>Games Played/Won/Rate</th>
                         <th>Rounds W/L/Diff</th>
+                        <th>Avg. W/L/Diff</th>
                     </tr>
                 </thead>
                 <tbody id="player_list"></tbody>
@@ -157,13 +157,19 @@
                     for (var name in players){
                         var player = players[name];
                         var rounds = `${player.rounds_for} / ${player.rounds_against} / ${player.rounds_for - player.rounds_against}`;
-                        table.push([name, player.games, player.wins, rounds, player.rounds_for - player.rounds_against, player.rounds_for]);
+                        var games = `${player.games} / ${player.wins} / ${((player.wins / player.games) * 100).toFixed(0)}%`;
+                        var avg_rounds_for = player.rounds_for / player.games;
+                        var avg_rounds_against = player.rounds_against / player.games;
+                        var avg_rounds = `${avg_rounds_for.toFixed(2)} / ${avg_rounds_against.toFixed(2)} / ${(avg_rounds_for - avg_rounds_against).toFixed(2)}`;
+                        table.push([
+                            name, games, rounds, avg_rounds,
+                            player.wins / player.games, avg_rounds_for - avg_rounds_against, avg_rounds_for]);
                     }
                     // Sort reversed
                     table.sort(function(a,b){
-                        var wins = b[2] - a[2];
-                        var diff = b[4] - a[4];
-                        var rounds = b[5] - a[5];
+                        var wins = b[4] - a[4];
+                        var diff = b[5] - a[5];
+                        var rounds = b[6] - a[6];
                         if (wins)
                             return wins;
                         if (diff)
