@@ -78,7 +78,7 @@
                     <tr>
                         <th></th>
                         <th>Player</th>
-                        <th>Games Played/Won/Rate</th>
+                        <th>Games/W/%</th>
                         <th>Rounds W/L/Diff</th>
                         <th>Avg. W/L/Diff</th>
                     </tr>
@@ -91,6 +91,10 @@
             var tournament = urlParams.get('tournament');
             if (!tournament)
                 tournament = 1;
+            function dec(i){
+                value = i.toFixed(2);
+                return value;
+            }
             function get_scores(){
                 load('//data.kingofsiege.com/matches?tournament=' + tournament, function(matches){
                     var match_list = document.getElementById('match_list');
@@ -160,7 +164,7 @@
                         var games = `${player.games} / ${player.wins} / ${((player.wins / player.games) * 100).toFixed(0)}%`;
                         var avg_rounds_for = player.rounds_for / player.games;
                         var avg_rounds_against = player.rounds_against / player.games;
-                        var avg_rounds = `${avg_rounds_for.toFixed(2)} / ${avg_rounds_against.toFixed(2)} / ${(avg_rounds_for - avg_rounds_against).toFixed(2)}`;
+                        var avg_rounds = `${dec(avg_rounds_for)} / ${dec(avg_rounds_against)} / ${dec(avg_rounds_for - avg_rounds_against)}`;
                         table.push([
                             name, games, rounds, avg_rounds,
                             player.wins / player.games, avg_rounds_for - avg_rounds_against, avg_rounds_for]);
