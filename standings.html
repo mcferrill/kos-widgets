@@ -139,10 +139,22 @@
                             match_number = match_list2.children.length + 1;
                         else
                             match_number = match_list.children.length + 1;
+                        var team1 = ''
+                        for (player of match.players.slice(0, match.players.length / 2))
+                            if (team1.length)
+                                team1 += ' & ' + player.short_name;
+                            else
+                                team1 = player.short_name;
+                        var team2 = '';
+                        for (player of match.players.slice(match.players.length / 2))
+                            if (team2.length)
+                                team2 += ' & ' + player.short_name;
+                            else
+                                team2 = player.short_name;
                         var html = `<tr>
                             <td>${match_number}</td>
-                            <td>${match.players[0].name} &amp; ${match.players[1].name}</td>
-                            <td>${match.players[2].name} &amp; ${match.players[3].name}</td>
+                            <td>${team1}</td>
+                            <td>${team2}</td>
                             <td>${match.map}</td>\n`;
                         if (match.score1)
                             html += `<td>${match.score1} - ${match.score2}</td>\n`;
