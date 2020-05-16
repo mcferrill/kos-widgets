@@ -128,7 +128,7 @@
                                 players[player.name].rounds_for += match.score1;
                                 players[player.name].rounds_against += match.score2;
                             }
-                            else if (match.score1){
+                            else if (match.score1 != null){
                                 if (match.score1 < match.score2)
                                     players[player.name].wins += 1;
                                 players[player.name].rounds_for += match.score2;
