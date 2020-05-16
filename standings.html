@@ -121,7 +121,8 @@
                                     rounds_against:0
                                 };
                             players[player.name].games++;
-                            if (i < 3 && match.score1){
+                            // Change to 3 for 3v3
+                            if (i < 2 && match.score1){
                                 if (match.score1 > match.score2)
                                     players[player.name].wins += 1;
                                 players[player.name].rounds_for += match.score1;
