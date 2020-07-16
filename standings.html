@@ -78,7 +78,7 @@
                     <tr>
                         <th></th>
                         <th>Player</th>
-                        <th>Games/W/%</th>
+                        <th>Games</th>
                         <th>Rounds W/L/Diff</th>
                         <th>Avg. W/L/Diff</th>
                     </tr>
@@ -120,7 +120,8 @@
                                     rounds_for: 0,
                                     rounds_against:0
                                 };
-                            players[player.name].games++;
+                            if (match.score1 != null)
+                                players[player.name].games++;
                             // Change to 3 for 3v3
                             if (i < 2 && match.score1 != null){
                                 if (match.score1 > match.score2)
@@ -174,7 +175,7 @@
                     for (var name in players){
                         var player = players[name];
                         var rounds = `${player.rounds_for} / ${player.rounds_against} / ${player.rounds_for - player.rounds_against}`;
-                        var games = `${player.games} / ${player.wins} / ${((player.wins / player.games) * 100).toFixed(0)}%`;
+                        var games = `${player.wins} / ${player.games} / ${((player.wins / player.games) * 100).toFixed(0)}%`;
                         var avg_rounds_for = player.rounds_for / player.games;
                         var avg_rounds_against = player.rounds_against / player.games;
                         var avg_rounds = `${dec(avg_rounds_for)} / ${dec(avg_rounds_against)} / ${dec(avg_rounds_for - avg_rounds_against)}`;
